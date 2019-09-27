@@ -9,6 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "TankStatics.h"
 #include "Missile.h"
+#include "TimerManager.h"
 
 // Sets default values
 ATurrel::ATurrel()
@@ -23,6 +24,7 @@ ATurrel::ATurrel()
 	TurrelSprite->AttachToComponent(TurrelDirection, FAttachmentTransformRules::KeepRelativeTransform);
 	
 	YawSpeed = 180.0f;
+	ReloadSpeed = 1.0f;
 }
 
 // Called when the game starts or when spawned
@@ -32,6 +34,12 @@ void ATurrel::BeginPlay()
 
 	Tank = Cast<ATank>(GetParentComponent()->GetOwner());
 	check(Tank);
+	ReadyToFire = true;
+}
+
+void ATurrel::Reload()
+{
+	ReadyToFire = true;
 }
 
 // Called every frame
@@ -74,7 +82,7 @@ void ATurrel::Tick(float DeltaTime)
 			}
 
 			auto CurrentInput = Tank->GetCurrentInput();
-			if (CurrentInput.bFire1 && Projectile)
+			if (CurrentInput.bFire1 && Projectile && ReadyToFire)
 			{
 				if (auto World = GetWorld())
 				{
@@ -87,6 +95,11 @@ void ATurrel::Tick(float DeltaTime)
 						
 						NewProjectile->SetActorLocation(Loc);
 						NewProjectile->SetActorRotation(Rot);
+
+						ReadyToFire = false;
+						
+						FTimerHandle DummyTimerHandle;
+						GetWorldTimerManager().SetTimer(DummyTimerHandle, this, &ATurrel::Reload, ReloadSpeed);
 					}
 					
 				}

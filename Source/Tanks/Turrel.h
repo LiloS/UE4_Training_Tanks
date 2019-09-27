@@ -28,10 +28,20 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turrel")
 	class ATank* Tank;
 
+	// Missile.
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turrel")
 		TSubclassOf<AMissile> Projectile;
 
+	// Reload speed in seconds.
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Turrel")
+		float ReloadSpeed;
+
+private:
+	bool ReadyToFire;
+	void Reload();
+
 public:
+
 	// Called every frame
 	void Tick(float DeltaTime) override;
 
