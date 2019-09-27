@@ -16,9 +16,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tank Input")
 	FVector2D MovementInput;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tank Input")
+		uint32 bFire1 : 1;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tank Input")
+		uint32 bFire2 : 1;
+	
 	void Sanitize();
 	void MoveX(float AxisValue);
 	void MoveY(float AxisValue);
+
+	void Fire1(bool bPressed);
+	void Fire2(bool bPressed);
 
 private:
 	FVector2D RawMovementInput;
@@ -44,9 +53,18 @@ public:
 	// Called to bind functionality to input
 	void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable, Category="Tank")
+	const FTankInput& GetCurrentInput();
+
 private:
 	void MoveX(float AxisValue);
 	void MoveY(float AxisValue);
+	
+	void Fire1Pressed();
+	void Fire1Released();
+
+	void Fire2Pressed();
+	void Fire2Released();
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Tank", meta = (AllowPrivateAccess = "true"))

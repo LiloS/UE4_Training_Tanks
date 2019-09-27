@@ -27,6 +27,16 @@ void FTankInput::MoveY(float AxisValue)
 	RawMovementInput.Y += AxisValue;
 }
 
+void FTankInput::Fire1(bool bPressed)
+{
+	bFire1 = bPressed;
+}
+
+void FTankInput::Fire2(bool bPressed)
+{
+	bFire2 = bPressed;
+}
+
 // Sets default values
 ATank::ATank()
 {
@@ -152,6 +162,15 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	InputComponent->BindAxis("MoveX", this, &ATank::MoveX);
 	InputComponent->BindAxis("MoveY", this, &ATank::MoveY);
+	InputComponent->BindAction("Fire1", IE_Pressed, this, &ATank::Fire1Pressed);
+	InputComponent->BindAction("Fire1", IE_Released, this, &ATank::Fire1Released);
+	InputComponent->BindAction("Fire2", IE_Pressed, this, &ATank::Fire2Pressed);
+	InputComponent->BindAction("Fire2", IE_Released, this, &ATank::Fire2Released);
+}
+
+const FTankInput& ATank::GetCurrentInput()
+{
+	return TankInput;
 }
 
 void ATank::MoveX(float AxisValue)
@@ -162,4 +181,24 @@ void ATank::MoveX(float AxisValue)
 void ATank::MoveY(float AxisValue)
 {
 	TankInput.MoveY(AxisValue);
+}
+
+void ATank::Fire1Pressed()
+{
+	TankInput.Fire1(true);
+}
+
+void ATank::Fire1Released()
+{
+	TankInput.Fire1(false);
+}
+
+void ATank::Fire2Pressed()
+{
+	TankInput.Fire2(true);
+}
+
+void ATank::Fire2Released()
+{
+	TankInput.Fire2(false);
 }

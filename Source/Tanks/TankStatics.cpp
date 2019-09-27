@@ -5,6 +5,7 @@
 
 float UTankStatics::FindDeltaAngleDegrees(float A1, float A2)
 {
+	int arraySize = 7;
 	float Delta = A2 - A1;
 
 	if (Delta > 180.0f)

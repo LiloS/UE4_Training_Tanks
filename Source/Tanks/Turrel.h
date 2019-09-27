@@ -4,29 +4,41 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Tank.h"
 #include "Turrel.generated.h"
 
+class AMissile;
 UCLASS()
 class TANKS_API ATurrel : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ATurrel();
 
 protected:
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	void BeginPlay() override;
 
-public:	
+	// Max turn rate.
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Turrel")
+	float YawSpeed;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turrel")
+	class ATank* Tank;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turrel")
+		TSubclassOf<AMissile> Projectile;
+
+public:
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	void Tick(float DeltaTime) override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turrel", meta = (AllowPrivateAccess = "true"))
-	class	UArrowComponent* TurrelDirection;
+	class UArrowComponent* TurrelDirection;
 
 	// Sprite for the Turrel body.
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turrel", meta = (AllowPrivateAccess = "true"))
-	class	UPaperSpriteComponent* TurrelSprite;
+	class UPaperSpriteComponent* TurrelSprite;
 };
