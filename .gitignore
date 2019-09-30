@@ -7,4 +7,7 @@
 /Content
 /Config
 /Binaries/Win64
+/Intermediate/AssetRegistryCache
+/Intermediate/Build
 /.vs/Tanks
+/.idea

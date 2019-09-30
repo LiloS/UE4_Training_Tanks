@@ -88,7 +88,7 @@ float AZombie::ConsumeAttackInput()
 bool AZombie::ZombieAIShouldAttack_Implementation()
 {
 	if (AActor* Target = GetTarget())
-	{
+	{		
 		auto OurLocation = GetActorLocation();
 		auto DirectionToTarget = (Target->GetActorLocation() - OurLocation).GetSafeNormal2D();
 		auto DotToTarget = FVector::DotProduct(DirectionToTarget, GetActorForwardVector());
