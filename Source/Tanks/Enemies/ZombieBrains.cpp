@@ -14,17 +14,18 @@ void AZombieBrains::Tick(float DeltaTime)
 			auto DotToTarget = FVector::DotProduct(DirectionToTarget, PawnAsZombie->GetActorForwardVector());
 			auto SidewaysDotToTarget = FVector::DotProduct(DirectionToTarget, PawnAsZombie->GetActorRightVector());
 			auto DeltaYawDesired = FMath::Atan2(SidewaysDotToTarget, DotToTarget);
-		}
 
-		if (PawnAsZombie->ZombieAIShouldAttack())
-		{
-			PawnAsZombie->AddAttackInput();
-		}else
-		{
-			PawnAsZombie->AddMovementInput(FVector(1.0f, 0.0f, 0.0f),
-			                               FMath::GetMappedRangeValueClamped(
-				                               FVector2D(-0.707f, 0.707f), FVector2D(0.0f, 1.0f), DotToTarget));
-			PawnAsZombie.AddRotationInput(DeltaYawDesired);
+			if (PawnAsZombie->ZombieAIShouldAttack())
+			{
+				PawnAsZombie->AddAttackInput();
+			}
+			else
+			{
+				PawnAsZombie->AddMovementInput(FVector(1.0f, 0.0f, 0.0f),
+					FMath::GetMappedRangeValueClamped(
+						FVector2D(-0.707f, 0.707f), FVector2D(0.0f, 1.0f), DotToTarget));
+				PawnAsZombie->AddRotationInput(DeltaYawDesired);
+			}
 		}
 	}
 }

@@ -42,6 +42,10 @@ public:
 	bool ZombieAIShouldAttack();
 	virtual bool ZombieAIShouldAttack_Implementation();
 
+	UFUNCTION(BlueprintNativeEvent, Category = "AI")
+	bool ZombieAI();
+	virtual bool ZombieAI_Implementation();
+
 	UFUNCTION(BlueprintCallable, Category="Pawn|Input", meta = (Keywords = "AddInput"))
 	virtual void AddRotationInput(float DeltaYawDesired);
 
@@ -103,4 +107,9 @@ protected:
 
 	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadWrite, Category = "Zombie")
 	float AttackAvailableTime;
+
+private:
+	float YawInput;
+
+	uint32 bAttackInput : 1;
 };

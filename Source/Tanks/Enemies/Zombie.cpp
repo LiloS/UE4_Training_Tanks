@@ -8,7 +8,7 @@
 // Sets default values
 AZombie::AZombie()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
@@ -28,7 +28,7 @@ AZombie::AZombie()
 void AZombie::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -63,26 +63,41 @@ ATank* AZombie::GetTargetAsTank()
 
 void AZombie::AddAttackInput()
 {
+	bAttackInput = true;
+}
+
+bool AZombie::ZombieAI_Implementation()
+{
+	return true;
 }
 
 void AZombie::AddRotationInput(float DeltaYawDesired)
 {
+	YawInput += DeltaYawDesired;
 }
 
 float AZombie::GetRotationInput()
 {
+	return YawInput;
 }
 
 float AZombie::ConsumeRotationInput()
 {
+	auto RetVal = YawInput;
+	YawInput = 0.0f;
+	return RetVal;
 }
 
 float AZombie::GetAttackInput()
 {
+	return bAttackInput;
 }
 
 float AZombie::ConsumeAttackInput()
 {
+	auto bRetval = bAttackInput;
+	bAttackInput = false;
+	return bRetval;
 }
 
 bool AZombie::ZombieAIShouldAttack_Implementation()
@@ -92,10 +107,10 @@ bool AZombie::ZombieAIShouldAttack_Implementation()
 		auto OurLocation = GetActorLocation();
 		auto DirectionToTarget = (Target->GetActorLocation() - OurLocation).GetSafeNormal2D();
 		auto DotToTarget = FVector::DotProduct(DirectionToTarget, GetActorForwardVector());
-		if (DotToTarget>= FMath::Cos(FMath::DegreesToRadians(AttackAngle)))
+		if (DotToTarget >= FMath::Cos(FMath::DegreesToRadians(AttackAngle)))
 		{
 			auto DistSqXY = FVector::DistSquaredXY(Target->GetActorLocation(), OurLocation);
-			if (DistSqXY<=(AttackDistance*AttackDistance))
+			if (DistSqXY <= (AttackDistance * AttackDistance))
 			{
 				return true;
 			}
@@ -103,5 +118,3 @@ bool AZombie::ZombieAIShouldAttack_Implementation()
 	}
 	return false;
 }
-
-
